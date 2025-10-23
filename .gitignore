@@ -1,0 +1,19 @@
+# Ignore Python venvs
+venv/
+.env/
+../finance_tracker_venv/
+
+# Byte-compiled / cache files
+__pycache__/
+*.pyc
+
+# OS/IDE files
+.DS_Store
+.vscode/
+.cursor/
+.idea/
+
+# Logs, data, etc.
+*.log
+*.sqlite3
+*.csv
