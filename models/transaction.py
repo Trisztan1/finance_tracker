@@ -9,6 +9,7 @@ class Transaction:
         self.date = date or datetime.date.today()
         self.amount = amount
         self.category_id = category.category_id
+        self.category_name = category.name
         self.type = category.type
         self.description = description
         self.unique_id = unique_id or ID.generate_timestamp_id()
@@ -47,20 +48,6 @@ class Transaction:
             "transaction_id": self.unique_id
         }
     
-    # This is wrong, you have to update it, but first write FinanceTracker class
-    @classmethod
-    def from_row(cls, row):
-        user = User(row["user"], password="")
-        category = Category(row["category"], row["type"])
-        date = datetime.datetime.strptime(row["date"], "%Y-%m-%d").date()
-
-        return cls(
-            user = user,
-            amount = float(row["amount"]),
-            category = category,
-            description = row.get("description", ""),
-            date = date
-        )
             
 
     

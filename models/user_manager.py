@@ -51,7 +51,6 @@ class UserManager:
             writer.writeheader()
             writer.writerows(data)
 
-
     #### USER MANAGMENT METHODS ####
 
     # Adding users
@@ -66,6 +65,31 @@ class UserManager:
         self.username_dict[user.username] = user
         self.user_trackers[user.user_id] = FinanceTracker(user)
         return user
+
+    def delete_user(self, username: str | None = None, user_id: str | None = None): # delete account method should also call this
+        user_to_delete: User = None
+        if user_id:
+            user_to_delete = self.users_dict.get(user_id)
+        elif username:
+            user_to_delete = self.username_dict.get(username)
+        else:
+            raise ValueError("Must provide either username or user_id")
+        
+        if not user_to_delete:
+            raise ValueError("User not found")
+            
+        self.users.remove(user_to_delete)
+        self.users_dict.pop(user_to_delete.user_id)
+        self.username_dict.pop(user_to_delete.username)
+        self.user_trackers.pop(user_to_delete.user_id)
+
+
+    def delete_account(self, user: User, password: str):
+        self.authenticate_user(user.username, password)
+        self.delete_user(user_id = user.user_id)
+            
+
+
     
 
     #### AUTHENTICATION METHODS ####
@@ -75,7 +99,7 @@ class UserManager:
         if username not in self.username_dict:
             raise ValueError(f"Invalid username: '{username}'")
 
-        user = self.get_user_by_username(username = username)
+        user = self.username_dict.get(username)
 
         if user.password != password:
             raise ValueError(f"Incorrect password!")
@@ -83,11 +107,4 @@ class UserManager:
 
 
     def login_user(self, user: User) -> FinanceTracker:
-        return FinanceTracker(user)
-
-
-    #### USER LOOKUP METHODS ####
-
-    def get_user_by_username(self, username):
-        user = self.username_dict[username]
-        return user
+        return self.user_trackers.get(user.user_id)

@@ -3,11 +3,17 @@ from models.id_generation import ID
 
 
 class User:
-    def __init__(self, username: str, password: str, categories=None, user_id = None):
+    def __init__(self, username: str, password: str, categories: list | None = None, user_id: str | None = None):
         self.username = username
         self.password = password
         self.categories = categories
         self.user_id = user_id or ID.generate_timestamp_id()
+
+    def __repr__(self) -> str:
+        return f"User(username='{self.username}', user_id='{self.user_id}')"
+
+    def __str__(self) -> str:
+        return f"User: {self.username} (ID: {self.user_id})"
     
     @property
     def categories(self):
@@ -32,13 +38,10 @@ class User:
         else:
             self._categories = categories
 
-    def to_row(self):
+    def to_row(self) -> dict:
         return {
             "username": self.username,
             "password": self.password,
             "user_id": self.user_id
         }
     
-    @classmethod
-    def from_row(cls, row):
-        ...

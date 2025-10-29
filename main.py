@@ -9,12 +9,21 @@ import time
 user_manager = UserManager()
 
 
-user = user_manager.authenticate_user("tristan", "12345123")
+user = user_manager.authenticate_user("matilda", "mati123")
 
 user_tracker = user_manager.login_user(user)
 
-print(f"{user.username}///{user.user_id}")
-print(user_tracker)
+user_manager.delete_account(user)
+
+user_manager.save_users()
+
+
+print(user_manager.username_dict)
+print()
+print(user_manager.users)
+print()
+# print(f"{user.username}///{user.user_id}")
+# print(user_tracker)
 # print(user_manager.username_dict)
 
 # wage = Paychecks(u, 50000, 10000)
